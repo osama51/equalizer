@@ -67,7 +67,7 @@ class MainApp(QMainWindow, FORM_CLASS):
         # self.rate=None
         self.timer = QTimer(self)
         self.grMain.plotItem.showGrid(True, True, 0.7)
-        self.grSpec.plotItem.showGrid(True, True, 0.7)
+        # self.grSpec.plotItem.showGrid(True, True, 0.7)
         # self.handle_buttons()
         self.verticalSlider_gain.valueChanged.connect(self.gain)
         self.verticalSlider_60.valueChanged.connect(
@@ -128,22 +128,6 @@ class MainApp(QMainWindow, FORM_CLASS):
         self.spectrum=self.original_spectrum
         self.freq = fftfreq(len(self.original_spectrum),1/self.samplerate)[:len(self.original_signal)//2]
 
-    
-            
-    # def spec(self):
-    #     spectrum = fft(data)[:len(data)//2]
-    #     freq = fftfreq(len(spectrum),1/samplerate)[:len(data)//2
-                                                   
-    #     threshold = 0.116 * max(abs(spectrum))
-    #     mask = abs(spectrum) > threshold
-    #     peaks_freqs=abs(freq[mask[:len(data)//2]])
-    #     phases_of_peaks=np.angle(spectrum)[mask[:len(data)//2]]
-    #     mags=spectrum[mask[:len(data)//2]]
-        
-    #     basis_fun=mags[i]*np.sin(2*np.pi*peaks_freqs[i]*time+phases_of_peaks[i]),new_track
-    
-        
-        
         
     #################################################################
     # add a flag to check if spectrum is modified a specific range ##           <--DON'T
@@ -169,23 +153,25 @@ class MainApp(QMainWindow, FORM_CLASS):
         self.filtered_data=np.fft.ifft(self.spectrum)
         self.signal= self.filtered_data.real/100000
         # self.play_sound()
-        self.fttttt()
+        # self.fttttt()
+        self.play()
         
-    def fttttt(self):
-        pen=pyqtgraph.mkPen(color='r')
-        self.grSpec.plot(self.freq,abs(self.spectrum),pen=pen,clear=True)
+    # def fttttt(self):
+    #     pen=pyqtgraph.mkPen(color='r')
+    #     self.grSpec.plot(self.freq,abs(self.spectrum),pen=pen,clear=True)
         
     def gain(self):
         self.label_master_gain.setText(str(self.verticalSlider_gain.value()))
         gain_ratio = float(self.verticalSlider_gain.value()/100)
         #print(gain_ratio)
         print('before',self.signal[15000])
-        self.signal = self.original_signal.real * gain_ratio
+        self.signal = self.original_signal * gain_ratio
         print('after',self.signal[15000])
         # self.play_sound()
-        self.fttttt()
+        # self.fttttt()
         
     def play_sound(self):
+        # self.gain()
         sd.play(self.signal[self.iterator:], self.samplerate)
 
     def update(self):
@@ -203,8 +189,10 @@ class MainApp(QMainWindow, FORM_CLASS):
     def play(self):
         # self.draw_spectrogram()
         self.fft()
-        self.fttttt()
+        # self.fttttt()
+        self.draw_spectrogram()
         # self.play_sound()
+        self.spec_plot.setLimits(xMin=0, xMax=self.t[-1], yMin=0, yMax=self.f[-1])
         _thread.start_new_thread(self.play_sound, ())
 
         pen=pyqtgraph.mkPen(color='c')
@@ -212,6 +200,8 @@ class MainApp(QMainWindow, FORM_CLASS):
                                         max(self.signal)*1.5)
         self.grMain.plot(self.Time, self.signal, pen=pen)
         self.update()
+        # t = len(self.signal)
+        # self.grMain.plotItem.setLimits(xMin=0, xMax=len(self.signal)[0], yMin=0, yMax=self.signal[0])
             
     def pause(self):
         self.timer.stop()
@@ -241,43 +231,31 @@ class MainApp(QMainWindow, FORM_CLASS):
     #     name = QFileDialog.getSaveFileName(self, 'Save File')
     #     df.to_csv (str(name[0]), index = False, header=True)
         
-    # def draw_spectrogram(self):
+    def draw_spectrogram(self):
+        self.grSpec.clear()
+        self.f, self.t, Sxx = signal.spectrogram(self.signal, self.samplerate)
+        # Interpret image data as row-major instead of col-major
+        pg.setConfigOptions(imageAxisOrder='row-major')
+        pg.mkQApp()
+        self.spec_plot = self.grSpec.addPlot()
+        img = pg.ImageItem()
+        self.spec_plot.addItem(img)
+        hist = pg.HistogramLUTItem() # histogram to control the gradient of the image
+        hist.setImageItem(img)
+        self.grSpec.addItem(hist)
+        # self.grSpec.show()
+        hist.setLevels(np.min(Sxx), np.max(Sxx))
+        img.setImage(Sxx) # Sxx: amplitude for each pixel
+        img.scale(self.t[-1]/np.size(Sxx, axis=1),
+                  self.f[-1]/np.size(Sxx, axis=0))
+        
+        self.spec_plot.setLabel('bottom', "Time", units='s')
+        self.spec_plot.setLabel('left', "Frequency", units='Hz')
+        hist.gradient.restoreState({'ticks': [(0.0, (0, 0, 0, 255)), (0.0, (32, 0, 129, 255)),
+                                            (0.8, (255, 255, 0, 255)), (0.5, (115, 15, 255, 255)),
+                                            (1.0, (255, 255, 255, 255))], 'mode': 'rgb'})
+        
 
-    #     self.grSpec.clear()
-    #     f, t, Sxx = signal.spectrogram(self.signal, self.samplerate)
-    # # Interpret image data as row-major instead of col-major
-    #     pg.setConfigOptions(imageAxisOrder='row-major')
-    #     pg.mkQApp()
-    #     win = self.grSpec
-    # # A plot area (ViewBox + axes) for displaying the image
-    #     p1 = win.addPlot()
-    # # Item for displaying image data
-    #     img = pg.ImageItem()
-    #     p1.addItem(img)
-    # # Add a histogram with which to control the gradient of the image
-    #     hist = pg.HistogramLUTItem()
-    # # Link the histogram to the image
-    #     hist.setImageItem(img)
-    # # If you don't add the histogram to the window, it stays invisible, but I find it useful.
-    #     win.addItem(hist)
-    # # Show the window
-    #     win.show()
-    # # Fit the min and max levels of the histogram to the data available
-    #     hist.setLevels(np.min(Sxx), np.max(Sxx))
-    # # This gradient is roughly comparable to the gradient used by Matplotlib
-    # # You can adjust it and then save it using hist.gradient.saveState()
-    # # Sxx contains the amplitude for each pixel
-    #     img.setImage(Sxx)
-    # # Scale the X and Y Axis to time and frequency (standard is pixels)
-    #     img.scale(t[-1]/np.size(Sxx, axis=1),
-    #               f[-1]/np.size(Sxx, axis=0))
-    # # Limit panning/zooming to the spectrogram
-    #     p1.setLimits(xMin=0, xMax=t[-1], yMin=0, yMax=f[-1])
-    # # Add labels to the axis
-    #     p1.setLabel('bottom', "Time", units='s')
-    # # If you include the units, Pyqtgraph automatically scales the axis and adjusts the SI prefix (in this case kHz)
-    #     p1.setLabel('left', "Frequency", units='Hz')
-            
         
 def main():
     app = QApplication(sys.argv)
