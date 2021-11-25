@@ -187,14 +187,8 @@ class MainApp(QMainWindow, FORM_CLASS):
         audio_samples1 = new_track.real * (2**14 - 1) / np.max(np.abs(new_track.real))
         # Convert to 16-bit data
         audio_samples1 = audio_samples1.astype(np.int16)
-        # play_obj = sa.play_buffer(audio_samples1, 1, 2, samplerate)
-        # play_obj.wait_done()
+        
         sd.play(audio_samples1, samplerate)
-    
-    def test(self): #https://dsp.stackexchange.com/questions/45566/what-is-the-correct-way-to-handle-saturation-on-a-dsp
-        max_spectrum = max(self.spectrum)
-        # divisor = np.arange(max_spectrum,len(self.original_spectrum),1)
-        self.spectrum11 = self.original_spectrum / max_spectrum
         
     def equalizer(self,min_freq,max_freq,slider_value):
         self.handle_slider()
@@ -202,8 +196,8 @@ class MainApp(QMainWindow, FORM_CLASS):
         first_index = 0
         second_index = 0
         db=slider_value
-        print(db, 'dB')
-        print(self.spectrum[int((first_index+second_index)/2)], 'not original')
+        # print(db, 'dB')
+        # print(self.spectrum[int((first_index+second_index)/2)], 'not original')
         for frequency in freq_list :
             if first_index == 0 and frequency>min_freq:
                 first_index = freq_list.index(frequency)
@@ -212,18 +206,9 @@ class MainApp(QMainWindow, FORM_CLASS):
                 second_index = freq_list.index(frequency)
         # print(self.original_spectrum[int((first_index+second_index)/2)], 'original222')
         # print(self.spectrum[int((first_index+second_index)/2)], 'bef')
+        print(first_index, second_index, 'ssssssss')
         self.spectrum[first_index:second_index] = [x * pow(10, (db/20)) for x in self.original_spectrum[first_index:second_index]]
-        # print(self.spectrum[int((first_index+second_index)/2)], 'after')
-        #print('ff',first_index,freq_list[first_index],'sec',second_index,freq_list[second_index])
-        # for index, item in enumerate(self.original_spectrum):
-        #     if index > first_index and index < second_index :
-        #         # print(self.spectrum[index], 'bef')
-        #         # print(item, 'item', index, 'index')
-        #         #print(type(complex((item.real * (10 **(db/20))), (item.imag * (10 **(db/20))))))                
-        #         # self.spectrum[index] = np.complex128((item.real * (10 **(db/20))) + (item.imag * (10 **(db/20)))*(1j))
-        #         # print((10 **(db/20)), 'mult')
-        #         # print(self.spectrum[index], 'after')
-        #         #print(len(self.spectrum))
+
         self.filtered_data = np.fft.ifft(self.spectrum)
         # print(len(self.signal), 'before filter')
         # print(self.filtered_data[5000])
@@ -233,7 +218,11 @@ class MainApp(QMainWindow, FORM_CLASS):
         # print(len(self.signal), 'after filter')
         # print(len(self.original_signal), 'after filter')
         # self.play_sound()
-        self.play()
+        index = int((time.time()-self.first_time)*self.samplerate)
+        sd.play(self.signal.real[index:], self.samplerate)
+        self.draw_spectrogram()
+        sf.write('bass.wav', self.signal, self.samplerate)
+        # self.play()
         
     # def fttttt(self):
     #     pen=pyqtgraph.mkPen(color='r')
@@ -245,12 +234,7 @@ class MainApp(QMainWindow, FORM_CLASS):
         print(gain_ratio, 'ratio')
         # print('before',self.signal[431882])
         self.signal = self.original_signal * gain_ratio
-        # print('after',self.signal[431882])
-        # self.play_sound()
-        # self.fttttt()
-        # self.draw_spectrogram()
-        # scipy.io.wavfile.write(filename, rate, data)
-        # audio_samples1 = (self.signal * ((2**15)-1)) / np.max(np.abs(self.signal))
+
         audio_samples2 = self.signal.astype(np.int16)
         self.signal = audio_samples2
         # sf.write('filename.wav', audio_samples2, self.samplerate)
@@ -287,9 +271,9 @@ class MainApp(QMainWindow, FORM_CLASS):
         # self.spec_plot.setLimits(xMin=0, xMax=self.t[-1], yMin=0, yMax=self.f[-1])
         _thread.start_new_thread(self.play_sound, ())
 
-        # pen=pyqtgraph.mkPen(color='c')
-        # self.grMain.plotItem.setYRange(min(self.signal)*1.5,
-        #                                 max(self.signal)*1.5)
+        pen=pyqtgraph.mkPen(color='c')
+        self.grMain.plotItem.setYRange(min(self.signal.real)*1.5,
+                                        max(self.signal.real)*1.5)
         self.grMain.plot(self.Time, self.signal.real)
         self.update()
         # t = len(self.signal)
@@ -344,9 +328,10 @@ class MainApp(QMainWindow, FORM_CLASS):
         
         self.spec_plot.setLabel('bottom', "Time", units='s')
         self.spec_plot.setLabel('left', "Frequency", units='Hz')
-        hist.gradient.restoreState({'ticks': [(0.0, (0, 0, 0, 255)), (0.0, (32, 0, 129, 255)),
+        hist.gradient.restoreState({'ticks': [(0.0, (0, 0, 0, 255)), (0.25, (32, 0, 129, 255)),
                                             (0.8, (255, 255, 0, 255)), (0.5, (115, 15, 255, 255)),
                                             (1.0, (255, 255, 255, 255))], 'mode': 'rgb'})
+        #(32, 0, 129, 255)
     
     
 def main():
