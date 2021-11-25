@@ -263,8 +263,7 @@ class MainApp(QMainWindow, FORM_CLASS):
         self.first_time = time.time()
         
         # sd.play(self.signal[self.iterator:], self.samplerate)
-        index = int((time.time()-self.first_time)*self.samplerate)
-        sd.play(self.signal.real[index:], self.samplerate)
+        sd.play(self.signal.real, self.samplerate)
 
     def update(self):
         # self.grMain.plotItem.setXRange(self.Time[self.iterator], self.Time[self.iterator+self.one_frame])
