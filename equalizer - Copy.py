@@ -210,10 +210,10 @@ class MainApp(QMainWindow, FORM_CLASS):
 
             if second_index == 0 and frequency>max_freq:
                 second_index = freq_list.index(frequency)
-        print(self.original_spectrum[int((first_index+second_index)/2)], 'original222')
-        print(self.spectrum[int((first_index+second_index)/2)], 'bef')
+        # print(self.original_spectrum[int((first_index+second_index)/2)], 'original222')
+        # print(self.spectrum[int((first_index+second_index)/2)], 'bef')
         self.spectrum[first_index:second_index] = [x * pow(10, (db/20)) for x in self.original_spectrum[first_index:second_index]]
-        print(self.spectrum[int((first_index+second_index)/2)], 'after')
+        # print(self.spectrum[int((first_index+second_index)/2)], 'after')
         #print('ff',first_index,freq_list[first_index],'sec',second_index,freq_list[second_index])
         # for index, item in enumerate(self.original_spectrum):
         #     if index > first_index and index < second_index :
@@ -225,13 +225,13 @@ class MainApp(QMainWindow, FORM_CLASS):
         #         # print(self.spectrum[index], 'after')
         #         #print(len(self.spectrum))
         self.filtered_data = np.fft.ifft(self.spectrum)
-        self.filtered_data = np.fft.ifft(self.filtered_data)
         # print(len(self.signal), 'before filter')
-        print(self.filtered_data[5000])
-        print(self.spectrum[5000])
-        self.signal= self.filtered_data
-        print(len(self.signal), 'after filter')
-        print(len(self.original_signal), 'after filter')
+        # print(self.filtered_data[5000])
+        # print(self.spectrum[5000])
+        audio_samples2 = self.filtered_data.astype(np.int16)
+        self.signal= audio_samples2
+        # print(len(self.signal), 'after filter')
+        # print(len(self.original_signal), 'after filter')
         # self.play_sound()
         self.play()
         
