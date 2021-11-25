@@ -70,6 +70,7 @@ class MainApp(QMainWindow, FORM_CLASS):
         # self.rate=None
         self.timer = QTimer(self)
         self.grMain.plotItem.showGrid(True, True, 0.7)
+        self.grUpdatedMain.plotItem.showGrid(True, True, 0.7)
         # self.grSpec.plotItem.showGrid(True, True, 0.7)
         # self.handle_buttons()
         self.verticalSlider_gain.valueChanged.connect(self.gain)
@@ -218,11 +219,12 @@ class MainApp(QMainWindow, FORM_CLASS):
         # print(len(self.signal), 'after filter')
         # print(len(self.original_signal), 'after filter')
         # self.play_sound()
-        index = int((time.time()-self.first_time)*self.samplerate)
-        sd.play(self.signal.real[index:], self.samplerate)
-        self.draw_spectrogram()
-        sf.write('bass.wav', self.signal, self.samplerate)
-        # self.play()
+        # index = int((time.time()-self.first_time)*self.samplerate)
+        # sd.play(self.signal.real[self.iterator:], self.samplerate)
+        # self.draw_spectrogram()
+        # sf.write('bass.wav', self.signal, self.samplerate)
+        
+        self.updated_graphs()
         
     # def fttttt(self):
     #     pen=pyqtgraph.mkPen(color='r')
@@ -238,16 +240,16 @@ class MainApp(QMainWindow, FORM_CLASS):
         audio_samples2 = self.signal.astype(np.int16)
         self.signal = audio_samples2
         # sf.write('filename.wav', audio_samples2, self.samplerate)
-        # self.play()
-        index = int((time.time()-self.first_time)*self.samplerate)
-        sd.play(self.signal.real[index:], self.samplerate)
+        
+        self.updated_graphs()
+        # index = int((time.time()-self.first_time)*self.samplerate)
+        # sd.play(self.signal.real[self.iterator:], self.samplerate)
         
     def play_sound(self):
         # self.gain()
         self.first_time = time.time()
-        
         # sd.play(self.signal[self.iterator:], self.samplerate)
-        sd.play(self.signal.real, self.samplerate)
+        sd.play(self.signal.real[self.iterator:], self.samplerate)
 
     def update(self):
         # self.grMain.plotItem.setXRange(self.Time[self.iterator], self.Time[self.iterator+self.one_frame])
@@ -257,28 +259,33 @@ class MainApp(QMainWindow, FORM_CLASS):
             self.iterator = 0
             self.actionPlay.setChecked(False)
         if self.actionPlay.isChecked():
-            self.timer.singleShot(100, self.update)
+            self.timer.singleShot(59, self.update)
         else:
             self.first = time.time()
             self.timer.stop()
             sd.stop()
             
+    def updated_graphs(self):
+        self.draw_spectrogram(self.signal, self.grUpdatedSpec)
+        self.grUpdatedMain.plotItem.setYRange(min(self.original_signal.real)*1.5, max(self.original_signal.real)*1.5)
+        self.grUpdatedMain.plot(self.Time, self.signal.real, pen = self.pen)
+        
     def play(self):
         # self.fft()
         # self.fttttt()
-        self.draw_spectrogram()
+        self.draw_spectrogram(self.original_signal, self.grSpec)
         # self.play_sound()
         # self.spec_plot.setLimits(xMin=0, xMax=self.t[-1], yMin=0, yMax=self.f[-1])
         _thread.start_new_thread(self.play_sound, ())
 
-        pen=pyqtgraph.mkPen(color='c')
-        self.grMain.plotItem.setYRange(min(self.signal.real)*1.5,
-                                        max(self.signal.real)*1.5)
-        self.grMain.plot(self.Time, self.signal.real)
+        self.pen=pyqtgraph.mkPen(color='c')
+        self.grMain.plotItem.setYRange(min(self.original_signal.real)*1.5, max(self.original_signal.real)*1.5)
+        self.grMain.plot(self.Time, self.original_signal.real, pen = self.pen)
+        self.updated_graphs()
         self.update()
         # t = len(self.signal)
         # self.grMain.plotItem.setLimits(xMin=0, xMax=len(self.signal)[0], yMin=0, yMax=self.signal[0])
-            
+    
     def pause(self):
         self.timer.stop()
         # self.iterator = 0
@@ -308,18 +315,18 @@ class MainApp(QMainWindow, FORM_CLASS):
     #     name = QFileDialog.getSaveFileName(self, 'Save File')
     #     df.to_csv (str(name[0]), index = False, header=True)
         
-    def draw_spectrogram(self):
-        self.grSpec.clear()
+    def draw_spectrogram(self, plotted_signal, graph):
+        graph.clear()
         self.f, self.t, Sxx = signal.spectrogram(self.signal.real, self.samplerate)
         # Interpret image data as row-major instead of col-major
         pg.setConfigOptions(imageAxisOrder='row-major')
         pg.mkQApp()
-        self.spec_plot = self.grSpec.addPlot()
+        self.spec_plot = graph.addPlot()
         img = pg.ImageItem()
         self.spec_plot.addItem(img)
         hist = pg.HistogramLUTItem() # histogram to control the gradient of the image
         hist.setImageItem(img)
-        self.grSpec.addItem(hist)
+        graph.addItem(hist)
         # self.grSpec.show()
         hist.setLevels(np.min(Sxx), np.max(Sxx))
         img.setImage(Sxx) # Sxx: amplitude for each pixel

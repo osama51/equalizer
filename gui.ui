@@ -25,35 +25,6 @@
         <string>Tab 1</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QWidget" name="widget" native="true">
-          <layout class="QGridLayout" name="gridLayout_3">
-           <item row="0" column="0">
-            <widget class="QSplitter" name="splitter">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <widget class="PlotWidget" name="grMain">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>70</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-             <widget class="GraphicsLayoutWidget" name="grSpec">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>30</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QGroupBox" name="groupBox">
           <property name="sizePolicy">
@@ -75,7 +46,7 @@
            </size>
           </property>
           <property name="title">
-           <string>GroupBox</string>
+           <string>Equalizer</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
            <property name="leftMargin">
@@ -96,16 +67,10 @@
            <property name="verticalSpacing">
             <number>0</number>
            </property>
-           <item row="2" column="0">
-            <widget class="QSlider" name="verticalSlider_gain">
-             <property name="maximum">
-              <number>200</number>
-             </property>
-             <property name="value">
-              <number>100</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
+           <item row="3" column="10">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>6kHz</string>
              </property>
             </widget>
            </item>
@@ -123,6 +88,61 @@
              </property>
             </widget>
            </item>
+           <item row="3" column="9">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>3kHz</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="12">
+            <widget class="QLabel" name="label_16k">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QSlider" name="verticalSlider_gain">
+             <property name="maximum">
+              <number>200</number>
+             </property>
+             <property name="value">
+              <number>100</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="8">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>1kHz</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="13">
+            <widget class="QLabel" name="label_12">
+             <property name="text">
+              <string>for fun</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="7">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>600Hz</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="QLabel" name="label_24">
+             <property name="text">
+              <string>-12 dB</string>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="13">
             <widget class="QLabel" name="label_22">
              <property name="text">
@@ -134,13 +154,6 @@
             <widget class="QLabel" name="label">
              <property name="text">
               <string>Master</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="10">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>6kHz</string>
              </property>
             </widget>
            </item>
@@ -160,66 +173,10 @@
              </property>
             </spacer>
            </item>
-           <item row="3" column="9">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>3kHz</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="7">
-            <widget class="QLabel" name="label_5">
-             <property name="text">
-              <string>600Hz</string>
-             </property>
-            </widget>
-           </item>
            <item row="3" column="11">
             <widget class="QLabel" name="label_9">
              <property name="text">
               <string>10kHz</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="3">
-            <widget class="QLabel" name="label_24">
-             <property name="text">
-              <string>-12 dB</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="12">
-            <widget class="QLabel" name="label_16k">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="8">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>1kHz</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="13">
-            <widget class="QLabel" name="label_12">
-             <property name="text">
-              <string>for fun</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="3">
-            <widget class="QLabel" name="label_23">
-             <property name="text">
-              <string>0 dB</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="12">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>16kHz</string>
              </property>
             </widget>
            </item>
@@ -230,29 +187,8 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_master_gain">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="7">
-            <widget class="QLabel" name="label_600">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="9">
             <widget class="QLabel" name="label_3k">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="5">
-            <widget class="QLabel" name="label_170">
              <property name="text">
               <string/>
              </property>
@@ -265,101 +201,8 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="6">
-            <widget class="QLabel" name="label_310">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="11">
-            <widget class="QLabel" name="label_10k">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="8">
-            <widget class="QLabel" name="label_1k">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <widget class="QLabel" name="label_25">
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>+12 dB</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="4">
-            <widget class="QLabel" name="label_60">
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="12">
-            <widget class="QSlider" name="verticalSlider_16k">
-             <property name="minimum">
-              <number>-12</number>
-             </property>
-             <property name="maximum">
-              <number>12</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="5">
-            <widget class="QSlider" name="verticalSlider_170">
-             <property name="minimum">
-              <number>-12</number>
-             </property>
-             <property name="maximum">
-              <number>10</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="4">
-            <widget class="QSlider" name="verticalSlider_60">
-             <property name="minimum">
-              <number>-12</number>
-             </property>
-             <property name="maximum">
-              <number>12</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
            <item row="2" column="11">
             <widget class="QSlider" name="verticalSlider_10k">
-             <property name="minimum">
-              <number>-12</number>
-             </property>
-             <property name="maximum">
-              <number>12</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="10">
-            <widget class="QSlider" name="verticalSlider_6k">
              <property name="minimum">
               <number>-12</number>
              </property>
@@ -381,6 +224,33 @@
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="13">
+            <widget class="QSlider" name="verticalSlider_11">
+             <property name="minimum">
+              <number>-18</number>
+             </property>
+             <property name="maximum">
+              <number>18</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="8">
+            <widget class="QLabel" name="label_1k">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="4">
+            <widget class="QLabel" name="label_60">
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </item>
@@ -410,6 +280,47 @@
              </property>
             </widget>
            </item>
+           <item row="0" column="6">
+            <widget class="QLabel" name="label_310">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="12">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>16kHz</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="5">
+            <widget class="QSlider" name="verticalSlider_170">
+             <property name="minimum">
+              <number>-12</number>
+             </property>
+             <property name="maximum">
+              <number>10</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="5">
+            <widget class="QLabel" name="label_170">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="11">
+            <widget class="QLabel" name="label_10k">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
            <item row="2" column="8">
             <widget class="QSlider" name="verticalSlider_1k">
              <property name="minimum">
@@ -423,24 +334,142 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="13">
-            <widget class="QSlider" name="verticalSlider_11">
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_master_gain">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="7">
+            <widget class="QLabel" name="label_600">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3">
+            <widget class="QLabel" name="label_23">
+             <property name="text">
+              <string>0 dB</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="12">
+            <widget class="QSlider" name="verticalSlider_16k">
              <property name="minimum">
-              <number>-18</number>
+              <number>-12</number>
              </property>
              <property name="maximum">
-              <number>18</number>
+              <number>12</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
              </property>
             </widget>
            </item>
-           <item row="1" column="14" rowspan="2">
-            <widget class="QLabel" name="inst_image">
-             <property name="text">
-              <string/>
+           <item row="2" column="4">
+            <widget class="QSlider" name="verticalSlider_60">
+             <property name="minimum">
+              <number>-12</number>
              </property>
+             <property name="maximum">
+              <number>12</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="10">
+            <widget class="QSlider" name="verticalSlider_6k">
+             <property name="minimum">
+              <number>-12</number>
+             </property>
+             <property name="maximum">
+              <number>12</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QLabel" name="label_25">
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>+12 dB</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QSplitter" name="splitter">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <widget class="QWidget" name="widget_5" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>70</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout">
+               <item>
+                <widget class="PlotWidget" name="grMain">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>70</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="PlotWidget" name="grUpdatedMain"/>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="widget_6" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>30</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_2">
+               <item>
+                <widget class="GraphicsLayoutWidget" name="grSpec">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>30</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="GraphicsLayoutWidget" name="grUpdatedSpec"/>
+               </item>
+              </layout>
+             </widget>
             </widget>
            </item>
           </layout>
