@@ -25,32 +25,26 @@ from scipy import signal
 import pyqtgraph as pg
 
 import scipy
-import simpleaudio as sa
+# import simpleaudio as sa
 import sounddevice as sd
 import logging
-import threading
+# import threading
 import _thread
 
-import shutil
+# import shutil
 
-import soundfile as sf
-from PyQt5 import QtCore, QtGui, QtWidgets
-from pyqtgraph import PlotWidget
-import pyqtgraph as pg
+# import soundfile as sf
+# from PyQt5 import QtCore, QtGui, QtWidgets
+# from pyqtgraph import PlotWidget
+# import pyqtgraph as pg
 
 # from pop import popWindow
-from scipy.io import wavfile
-import numpy as np
-import sys
-import os
-from scipy.fftpack import fft
-#from funcations import funcation as f
-import wave
-import struct
-from scipy import signal
-from playsound import playsound
-from collections import OrderedDict
-from scipy.io import wavfile
+# from scipy.io import wavfile
+# import numpy as np
+# import sys
+# import os
+# from scipy.fftpack import fft
+
 
 
 
@@ -63,11 +57,7 @@ class MainApp(QMainWindow, FORM_CLASS):
         self.setupUi(self)
         self.iterator = 0
         self.timor= 0.0 
-
-        # self.chunk=4096 # gets replaced automatically
-        # self.updatesPerSecond=10
-        # self.chunksRead=0
-        # self.rate=None
+        self.pen=pyqtgraph.mkPen(color='c') 
         self.timer = QTimer(self)
         self.grMain.plotItem.showGrid(True, True, 0.7)
         self.grUpdatedMain.plotItem.showGrid(True, True, 0.7)
@@ -155,23 +145,23 @@ class MainApp(QMainWindow, FORM_CLASS):
     def read_data(self):
         self.iterator = 0
         spf = wave.open(self.file_path_name, "r")
-        print(spf)
+        # print(spf)
         # print(type(spf))
         # Extract Raw Audio from Wav File
         self.original_signal = spf.readframes(-1)
-        print(type(self.original_signal))
+        # print(type(self.original_signal))
         self.original_signal = np.frombuffer(self.original_signal, "int16")
         self.signal=self.original_signal
-        print(type(self.original_signal))
-        print(self.original_signal[5000], 'heeeeeeeeeere')
+        # print(type(self.original_signal))
+        # print(self.original_signal[5000], 'heeeeeeeeeere')
         self.samplerate = spf.getframerate()
-        self.one_frame = int(self.samplerate/17)
+        self.one_frame = int(self.samplerate/10) #17
         self.Time = np.linspace(0, len(self.original_signal) / self.samplerate, num=len(self.original_signal))
         self.original_spectrum = fft(self.original_signal)[:len(self.original_signal)]
         self.original_spectrum = list(self.original_spectrum)
         self.spectrum = self.original_spectrum
-        print(self.spectrum[5000], type(self.spectrum[0]))
-        print(scipy.fft.ifft(self.spectrum)[5000], type(self.spectrum[0]))
+        # print(self.spectrum[5000], type(self.spectrum[0]))
+        # print(scipy.fft.ifft(self.spectrum)[5000], type(self.spectrum[0]))
         self.freq = fftfreq(len(self.original_spectrum),1/self.samplerate)[:len(self.original_signal)]
 
     def read_csv_and_play_audio(self,note_name):
@@ -207,7 +197,7 @@ class MainApp(QMainWindow, FORM_CLASS):
                 second_index = freq_list.index(frequency)
         # print(self.original_spectrum[int((first_index+second_index)/2)], 'original222')
         # print(self.spectrum[int((first_index+second_index)/2)], 'bef')
-        print(first_index, second_index, 'ssssssss')
+        # print(first_index, second_index, 'ssssssss')
         self.spectrum[first_index:second_index] = [x * pow(10, (db/20)) for x in self.original_spectrum[first_index:second_index]]
 
         self.filtered_data = np.fft.ifft(self.spectrum)
@@ -223,14 +213,13 @@ class MainApp(QMainWindow, FORM_CLASS):
         # sd.play(self.signal.real[self.iterator:], self.samplerate)
         # self.draw_spectrogram()
         # sf.write('bass.wav', self.signal, self.samplerate)
-        
         self.updated_graphs()
         
     # def fttttt(self):
     #     pen=pyqtgraph.mkPen(color='r')
     #     self.grSpec.plot(self.freq,abs(self.spectrum),pen=pen,clear=True)
         
-    def gain(self): #https://stackoverflow.com/questions/36664121/modify-volume-while-streaming-with-pyaudio
+    def gain(self):
         self.label_master_gain.setText(str(self.verticalSlider_gain.value()))
         gain_ratio = float(self.verticalSlider_gain.value()/100)
         print(gain_ratio, 'ratio')
@@ -244,7 +233,16 @@ class MainApp(QMainWindow, FORM_CLASS):
         self.updated_graphs()
         # index = int((time.time()-self.first_time)*self.samplerate)
         # sd.play(self.signal.real[self.iterator:], self.samplerate)
-        
+    
+    def realtime_toggle(self):
+        if self.actionRealtime.isChecked():
+            self.grUpdatedMain.plotItem.setXRange(self.Time[self.iterator], self.Time[self.iterator+self.one_frame])
+            self.grMain.plotItem.setXRange(self.Time[self.iterator], self.Time[self.iterator+self.one_frame])
+        else:
+            self.grUpdatedMain.plotItem.setXRange(self.Time[0], self.Time[len(self.Time)-1])
+            self.grMain.plotItem.setXRange(self.Time[0], self.Time[len(self.Time)-1])
+            
+            
     def play_sound(self):
         # self.gain()
         self.first_time = time.time()
@@ -252,6 +250,7 @@ class MainApp(QMainWindow, FORM_CLASS):
         sd.play(self.signal.real[self.iterator:], self.samplerate)
 
     def update(self):
+        self.realtime_toggle()
         # self.grMain.plotItem.setXRange(self.Time[self.iterator], self.Time[self.iterator+self.one_frame])
         self.iterator += self.one_frame
         
@@ -259,7 +258,7 @@ class MainApp(QMainWindow, FORM_CLASS):
             self.iterator = 0
             self.actionPlay.setChecked(False)
         if self.actionPlay.isChecked():
-            self.timer.singleShot(59, self.update)
+            self.timer.singleShot(100, self.update) #59
         else:
             self.first = time.time()
             self.timer.stop()
@@ -267,8 +266,9 @@ class MainApp(QMainWindow, FORM_CLASS):
             
     def updated_graphs(self):
         self.draw_spectrogram(self.signal, self.grUpdatedSpec)
-        self.grUpdatedMain.plotItem.setYRange(min(self.original_signal.real)*1.5, max(self.original_signal.real)*1.5)
+        self.grUpdatedMain.plotItem.setYRange(min(self.original_signal.real)*2, max(self.original_signal.real)*2)
         self.grUpdatedMain.plot(self.Time, self.signal.real, pen = self.pen)
+        self.realtime_toggle()
         
     def play(self):
         # self.fft()
@@ -277,14 +277,11 @@ class MainApp(QMainWindow, FORM_CLASS):
         # self.play_sound()
         # self.spec_plot.setLimits(xMin=0, xMax=self.t[-1], yMin=0, yMax=self.f[-1])
         _thread.start_new_thread(self.play_sound, ())
-
-        self.pen=pyqtgraph.mkPen(color='c')
-        self.grMain.plotItem.setYRange(min(self.original_signal.real)*1.5, max(self.original_signal.real)*1.5)
+        self.grMain.plotItem.setYRange(min(self.original_signal.real)*2, max(self.original_signal.real)*2)
         self.grMain.plot(self.Time, self.original_signal.real, pen = self.pen)
+        self.grUpdatedMain.plotItem.setYRange(min(self.original_signal.real)*2, max(self.original_signal.real)*2)
         self.updated_graphs()
         self.update()
-        # t = len(self.signal)
-        # self.grMain.plotItem.setLimits(xMin=0, xMax=len(self.signal)[0], yMin=0, yMax=self.signal[0])
     
     def pause(self):
         self.timer.stop()
@@ -299,6 +296,9 @@ class MainApp(QMainWindow, FORM_CLASS):
             
     def stop(self):
         self.timer.stop()
+        self.grSpec.clear()
+        self.grUpdatedSpec.clear()
+        self.grUpdatedMain.plotItem.clearPlots()
         self.grMain.plotItem.clearPlots()
         self.actionPlay.setChecked(False)
         self.iterator = 0
@@ -317,25 +317,26 @@ class MainApp(QMainWindow, FORM_CLASS):
         
     def draw_spectrogram(self, plotted_signal, graph):
         graph.clear()
-        self.f, self.t, Sxx = signal.spectrogram(self.signal.real, self.samplerate)
+        f, t, Sxx = signal.spectrogram(plotted_signal.real, self.samplerate)
         # Interpret image data as row-major instead of col-major
         pg.setConfigOptions(imageAxisOrder='row-major')
         pg.mkQApp()
-        self.spec_plot = graph.addPlot()
+        spec_plot = graph.addPlot()
         img = pg.ImageItem()
-        self.spec_plot.addItem(img)
+        spec_plot.addItem(img)
         hist = pg.HistogramLUTItem() # histogram to control the gradient of the image
         hist.setImageItem(img)
         graph.addItem(hist)
         # self.grSpec.show()
         hist.setLevels(np.min(Sxx), np.max(Sxx))
         img.setImage(Sxx) # Sxx: amplitude for each pixel
-        img.scale(self.t[-1]/np.size(Sxx, axis=1),
-                  self.f[-1]/np.size(Sxx, axis=0))
+        img.scale(t[-1]/np.size(Sxx, axis=1),
+                  f[-1]/np.size(Sxx, axis=0))
         
-        self.spec_plot.setLabel('bottom', "Time", units='s')
-        self.spec_plot.setLabel('left', "Frequency", units='Hz')
-        hist.gradient.restoreState({'ticks': [(0.0, (0, 0, 0, 255)), (0.25, (32, 0, 129, 255)),
+        spec_plot.setLimits(xMin=0, xMax=t[-1], yMin=0, yMax=f[-1])
+        spec_plot.setLabel('bottom', "Time", units='s')
+        spec_plot.setLabel('left', "Frequency", units='Hz')
+        hist.gradient.restoreState({'ticks': [(0.0, (0, 0, 0, 255)), (0.01, (32, 0, 129, 255)),
                                             (0.8, (255, 255, 0, 255)), (0.5, (115, 15, 255, 255)),
                                             (1.0, (255, 255, 255, 255))], 'mode': 'rgb'})
         #(32, 0, 129, 255)

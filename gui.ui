@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1113</width>
-    <height>640</height>
+    <width>960</width>
+    <height>622</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -153,7 +153,7 @@
            <item row="3" column="0">
             <widget class="QLabel" name="label">
              <property name="text">
-              <string>Master</string>
+              <string>Volume</string>
              </property>
             </widget>
            </item>
@@ -1138,7 +1138,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1113</width>
+     <width>960</width>
      <height>21</height>
     </rect>
    </property>
@@ -1164,6 +1164,8 @@
    <addaction name="separator"/>
    <addaction name="actionPlay"/>
    <addaction name="actionStop"/>
+   <addaction name="separator"/>
+   <addaction name="actionRealtime"/>
   </widget>
   <action name="actionOpen">
    <property name="icon">
@@ -1203,6 +1205,21 @@
    </property>
    <property name="toolTip">
     <string>Stop</string>
+   </property>
+  </action>
+  <action name="actionRealtime">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>icons/signal.png</normaloff>icons/signal.png</iconset>
+   </property>
+   <property name="text">
+    <string>Realtime/Static</string>
+   </property>
+   <property name="toolTip">
+    <string>Toggle between moving and static signal</string>
    </property>
   </action>
  </widget>
