@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import time
 from PyQt5.uic import loadUiType
 from PyQt5 import QtCore, QtGui
-from scipy.fft import fft, fftfreq
+from scipy.fft import fft, fftfreq, rfft, rfftfreq
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -23,6 +23,7 @@ from os import path
 import pyqtgraph
 from scipy import signal
 import pyqtgraph as pg
+from time import sleep
 
 import scipy
 # import simpleaudio as sa
@@ -136,13 +137,27 @@ class MainApp(QMainWindow, FORM_CLASS):
         self.label_10k.setText(str(self.verticalSlider_10k.value()))
         self.label_16k.setText(str(self.verticalSlider_16k.value()))
 
+    def reset_sliders(self):
+        self.verticalSlider_60.setValue(0)
+        self.verticalSlider_170.setValue(0)
+        self.verticalSlider_310.setValue(0)
+        self.verticalSlider_600.setValue(0)
+        self.verticalSlider_1k.setValue(0)
+        self.verticalSlider_3k.setValue(0)
+        self.verticalSlider_6k.setValue(0)
+        self.verticalSlider_10k.setValue(0)
+        self.verticalSlider_16k.setValue(0)
+            
+        
     def browse(self):
+        
         self.file_path_name, _ = QtWidgets.QFileDialog.getOpenFileName(self, 'Open file', " ", "(*.txt *.csv *.xls *.wav)")
         self.file_name, self.file_extension = os.path.splitext(self.file_path_name)
         self.read_data()
         print("I read the data!")
 
     def read_data(self):
+        self.reset_sliders()
         self.iterator = 0
         spf = wave.open(self.file_path_name, "r")
         # print(spf)
@@ -157,12 +172,12 @@ class MainApp(QMainWindow, FORM_CLASS):
         self.samplerate = spf.getframerate()
         self.one_frame = int(self.samplerate/10) #17
         self.Time = np.linspace(0, len(self.original_signal) / self.samplerate, num=len(self.original_signal))
-        self.original_spectrum = fft(self.original_signal)[:len(self.original_signal)]
-        self.original_spectrum = list(self.original_spectrum)
+        self.original_spectrum = rfft(self.original_signal)[:len(self.original_signal)]
+        # self.original_spectrum = list(self.original_spectrum)
         self.spectrum = self.original_spectrum
         # print(self.spectrum[5000], type(self.spectrum[0]))
         # print(scipy.fft.ifft(self.spectrum)[5000], type(self.spectrum[0]))
-        self.freq = fftfreq(len(self.original_spectrum),1/self.samplerate)[:len(self.original_signal)]
+        self.freq = rfftfreq(len(self.original_spectrum),1/self.samplerate)[:len(self.original_signal)]
 
     def read_csv_and_play_audio(self,note_name):
         path=note_name+'.csv'
@@ -172,17 +187,18 @@ class MainApp(QMainWindow, FORM_CLASS):
         spectrum=[]
         for i in range(len(real_spect)):
             spectrum.append(complex(real_spect[i],imag[i]))
-        new_track= scipy.fft.ifft(spectrum)
+        new_track= np.fft.irfft(spectrum)
         samplerate = 48000                
         # Ensure that highest value is in 16-bit range
-        audio_samples1 = new_track.real * (2**14 - 1) / np.max(np.abs(new_track.real))
+        audio_samples1 = new_track.real * (2**14 - 1) / np.max(new_track.real)
         # Convert to 16-bit data
         audio_samples1 = audio_samples1.astype(np.int16)
         
         sd.play(audio_samples1, samplerate)
-        
+           
     def equalizer(self,min_freq,max_freq,slider_value):
-        self.handle_slider()
+        # sleep(0.5)
+        # self.handle_slider()
         freq_list=list(self.freq)
         first_index = 0
         second_index = 0
@@ -198,12 +214,13 @@ class MainApp(QMainWindow, FORM_CLASS):
         # print(self.original_spectrum[int((first_index+second_index)/2)], 'original222')
         # print(self.spectrum[int((first_index+second_index)/2)], 'bef')
         # print(first_index, second_index, 'ssssssss')
-        self.spectrum[first_index:second_index] = [x * pow(10, (db/20)) for x in self.original_spectrum[first_index:second_index]]
+        self.spectrum[first_index:second_index] = [x * pow(10, (db/10)) for x in self.original_spectrum[first_index:second_index]]
 
-        self.filtered_data = np.fft.ifft(self.spectrum)
+        self.filtered_data = np.fft.irfft(self.spectrum)
         # print(len(self.signal), 'before filter')
         # print(self.filtered_data[5000])
         # print(self.spectrum[5000])
+        # self.filtered_data = self.filtered_data.real * (2**14 - 1) / np.max(np.abs(self.filtered_data.real))
         audio_samples2 = self.filtered_data.astype(np.int16)
         self.signal= audio_samples2
         # print(len(self.signal), 'after filter')
@@ -267,6 +284,7 @@ class MainApp(QMainWindow, FORM_CLASS):
     def updated_graphs(self):
         self.draw_spectrogram(self.signal, self.grUpdatedSpec)
         self.grUpdatedMain.plotItem.setYRange(min(self.original_signal.real)*2, max(self.original_signal.real)*2)
+        self.grUpdatedMain.clear()
         self.grUpdatedMain.plot(self.Time, self.signal.real, pen = self.pen)
         self.realtime_toggle()
         

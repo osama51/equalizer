@@ -204,7 +204,7 @@
            <item row="2" column="11">
             <widget class="QSlider" name="verticalSlider_10k">
              <property name="minimum">
-              <number>-12</number>
+              <number>-15</number>
              </property>
              <property name="maximum">
               <number>12</number>
@@ -217,7 +217,7 @@
            <item row="2" column="9">
             <widget class="QSlider" name="verticalSlider_3k">
              <property name="minimum">
-              <number>-12</number>
+              <number>-15</number>
              </property>
              <property name="maximum">
               <number>12</number>
@@ -257,7 +257,7 @@
            <item row="2" column="6">
             <widget class="QSlider" name="verticalSlider_310">
              <property name="minimum">
-              <number>-12</number>
+              <number>-15</number>
              </property>
              <property name="maximum">
               <number>12</number>
@@ -270,7 +270,7 @@
            <item row="2" column="7">
             <widget class="QSlider" name="verticalSlider_600">
              <property name="minimum">
-              <number>-12</number>
+              <number>-15</number>
              </property>
              <property name="maximum">
               <number>12</number>
@@ -297,7 +297,7 @@
            <item row="2" column="5">
             <widget class="QSlider" name="verticalSlider_170">
              <property name="minimum">
-              <number>-12</number>
+              <number>-15</number>
              </property>
              <property name="maximum">
               <number>10</number>
@@ -324,7 +324,7 @@
            <item row="2" column="8">
             <widget class="QSlider" name="verticalSlider_1k">
              <property name="minimum">
-              <number>-12</number>
+              <number>-15</number>
              </property>
              <property name="maximum">
               <number>12</number>
@@ -358,7 +358,7 @@
            <item row="2" column="12">
             <widget class="QSlider" name="verticalSlider_16k">
              <property name="minimum">
-              <number>-12</number>
+              <number>-15</number>
              </property>
              <property name="maximum">
               <number>12</number>
@@ -371,10 +371,10 @@
            <item row="2" column="4">
             <widget class="QSlider" name="verticalSlider_60">
              <property name="minimum">
-              <number>-12</number>
+              <number>-15</number>
              </property>
              <property name="maximum">
-              <number>12</number>
+              <number>8</number>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -384,7 +384,7 @@
            <item row="2" column="10">
             <widget class="QSlider" name="verticalSlider_6k">
              <property name="minimum">
-              <number>-12</number>
+              <number>-15</number>
              </property>
              <property name="maximum">
               <number>12</number>
