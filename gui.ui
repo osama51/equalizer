@@ -25,6 +25,71 @@
         <string>Tab 1</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QWidget" name="widget" native="true">
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QSplitter" name="splitter">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <widget class="QWidget" name="widget_5" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>70</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout">
+               <item>
+                <widget class="PlotWidget" name="grMain">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>70</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="PlotWidget" name="grUpdatedMain"/>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="widget_6" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>30</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_2">
+               <item>
+                <widget class="GraphicsLayoutWidget" name="grSpec">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>30</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="GraphicsLayoutWidget" name="grUpdatedSpec"/>
+               </item>
+              </layout>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
         <item row="1" column="0">
          <widget class="QGroupBox" name="groupBox">
           <property name="sizePolicy">
@@ -207,7 +272,10 @@
               <number>-15</number>
              </property>
              <property name="maximum">
-              <number>12</number>
+              <number>10</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -220,7 +288,10 @@
               <number>-15</number>
              </property>
              <property name="maximum">
-              <number>12</number>
+              <number>9</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -257,10 +328,16 @@
            <item row="2" column="6">
             <widget class="QSlider" name="verticalSlider_310">
              <property name="minimum">
-              <number>-15</number>
+              <number>-24</number>
              </property>
              <property name="maximum">
-              <number>12</number>
+              <number>8</number>
+             </property>
+             <property name="pageStep">
+              <number>5</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -273,7 +350,13 @@
               <number>-15</number>
              </property>
              <property name="maximum">
-              <number>12</number>
+              <number>8</number>
+             </property>
+             <property name="pageStep">
+              <number>5</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -297,10 +380,16 @@
            <item row="2" column="5">
             <widget class="QSlider" name="verticalSlider_170">
              <property name="minimum">
-              <number>-15</number>
+              <number>-24</number>
              </property>
              <property name="maximum">
               <number>10</number>
+             </property>
+             <property name="pageStep">
+              <number>5</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -327,7 +416,13 @@
               <number>-15</number>
              </property>
              <property name="maximum">
-              <number>12</number>
+              <number>8</number>
+             </property>
+             <property name="pageStep">
+              <number>5</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -361,7 +456,10 @@
               <number>-15</number>
              </property>
              <property name="maximum">
-              <number>12</number>
+              <number>10</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -371,10 +469,13 @@
            <item row="2" column="4">
             <widget class="QSlider" name="verticalSlider_60">
              <property name="minimum">
-              <number>-15</number>
+              <number>-24</number>
              </property>
              <property name="maximum">
               <number>8</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -387,7 +488,10 @@
               <number>-15</number>
              </property>
              <property name="maximum">
-              <number>12</number>
+              <number>10</number>
+             </property>
+             <property name="tracking">
+              <bool>false</bool>
              </property>
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -405,71 +509,6 @@
              <property name="text">
               <string>+12 dB</string>
              </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QWidget" name="widget" native="true">
-          <layout class="QGridLayout" name="gridLayout_3">
-           <item row="0" column="0">
-            <widget class="QSplitter" name="splitter">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <widget class="QWidget" name="widget_5" native="true">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>70</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>200</width>
-                <height>0</height>
-               </size>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout">
-               <item>
-                <widget class="PlotWidget" name="grMain">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                   <horstretch>70</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="PlotWidget" name="grUpdatedMain"/>
-               </item>
-              </layout>
-             </widget>
-             <widget class="QWidget" name="widget_6" native="true">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>30</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_2">
-               <item>
-                <widget class="GraphicsLayoutWidget" name="grSpec">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                   <horstretch>30</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="GraphicsLayoutWidget" name="grUpdatedSpec"/>
-               </item>
-              </layout>
-             </widget>
             </widget>
            </item>
           </layout>

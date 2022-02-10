@@ -66,23 +66,23 @@ class MainApp(QMainWindow, FORM_CLASS):
         # self.handle_buttons()
         self.verticalSlider_gain.valueChanged.connect(self.gain)
         self.verticalSlider_60.valueChanged.connect(
-            lambda:self.equalizer(0,60,self.verticalSlider_60.value()))
+            lambda:self.equalizer(0,749,self.verticalSlider_60.value()))
         self.verticalSlider_170.valueChanged.connect(
-            lambda:self.equalizer(60,250,self.verticalSlider_170.value()))
+            lambda:self.equalizer(750,1400,self.verticalSlider_170.value()))
         self.verticalSlider_310.valueChanged.connect(
-            lambda:self.equalizer(250,400,self.verticalSlider_310.value()))
+            lambda:self.equalizer(1401,16000,self.verticalSlider_310.value()))
         self.verticalSlider_600.valueChanged.connect(
-            lambda:self.equalizer(400,700,self.verticalSlider_600.value()))
+            lambda:self.equalizer(401,700,self.verticalSlider_600.value()))
         self.verticalSlider_1k.valueChanged.connect(
-            lambda:self.equalizer(700,2000,self.verticalSlider_1k.value()))
+            lambda:self.equalizer(701,2000,self.verticalSlider_1k.value()))
         self.verticalSlider_3k.valueChanged.connect(
-            lambda:self.equalizer(2000,4000,self.verticalSlider_3k.value()))
+            lambda:self.equalizer(2001,4000,self.verticalSlider_3k.value()))
         self.verticalSlider_6k.valueChanged.connect(
-            lambda:self.equalizer(4000,6000,self.verticalSlider_6k.value()))
+            lambda:self.equalizer(4001,6000,self.verticalSlider_6k.value()))
         self.verticalSlider_10k.valueChanged.connect(
-            lambda:self.equalizer(6000,10000,self.verticalSlider_10k.value()))
+            lambda:self.equalizer(6001,10000,self.verticalSlider_10k.value()))
         self.verticalSlider_16k.valueChanged.connect(
-            lambda:self.equalizer(10000,16000,self.verticalSlider_16k.value()))
+            lambda:self.equalizer(10001,16000,self.verticalSlider_16k.value()))
         
         self.actionOpen.triggered.connect(self.browse)
         self.actionPlay.triggered.connect(self.toggle)
@@ -221,7 +221,8 @@ class MainApp(QMainWindow, FORM_CLASS):
         # print(self.filtered_data[5000])
         # print(self.spectrum[5000])
         # self.filtered_data = self.filtered_data.real * (2**14 - 1) / np.max(np.abs(self.filtered_data.real))
-        audio_samples2 = self.filtered_data.astype(np.int16)
+        # audio_samples2 = self.filtered_data.astype(np.int16)
+        audio_samples2 = np.asanyarray(self.filtered_data, dtype=np.int16)
         self.signal= audio_samples2
         # print(len(self.signal), 'after filter')
         # print(len(self.original_signal), 'after filter')
@@ -354,9 +355,15 @@ class MainApp(QMainWindow, FORM_CLASS):
         spec_plot.setLimits(xMin=0, xMax=t[-1], yMin=0, yMax=f[-1])
         spec_plot.setLabel('bottom', "Time", units='s')
         spec_plot.setLabel('left', "Frequency", units='Hz')
-        hist.gradient.restoreState({'ticks': [(0.0, (0, 0, 0, 255)), (0.01, (32, 0, 129, 255)),
-                                            (0.8, (255, 255, 0, 255)), (0.5, (115, 15, 255, 255)),
-                                            (1.0, (255, 255, 255, 255))], 'mode': 'rgb'})
+        # hist.gradient.restoreState({'ticks': [(0.0, (0, 0, 0, 255)), (0.01, (32, 0, 129, 255)),
+        #                                     (0.8, (255, 255, 0, 255)), (0.5, (115, 15, 255, 255)),
+        #                                     (1.0, (255, 255, 255, 255))], 'mode': 'rgb'})
+        
+        hist.gradient.restoreState({'mode': 'rgb',
+                                    'ticks': [(0.5, (0, 182, 188, 255)),
+                                              (1.0, (150, 111, 0, 255)),
+                                              (0.0, (75, 0, 113, 0)),
+                                              (0.005, (246, 111, 0, 255))]})
         #(32, 0, 129, 255)
     
     
